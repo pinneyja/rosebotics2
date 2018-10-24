@@ -84,8 +84,6 @@ class DriveSystem(object):
         Move for the given number of seconds at the given wheel speeds.
         Speeds are -100 to 100, where negative means moving backwards.
         """
-        self.start_moving(left_wheel_duty_cycle_percent,
-                          right_wheel_duty_cycle_percent)
         # For pedagogical purposes, we use a WHILE loop to keep  going for a
         # given number of seconds, instead of using the simpler alternative:
         #      time.sleep(seconds)
@@ -108,6 +106,8 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-inches-moved.
         # TODO:   Assume that the conversion is linear with respect to speed.
+        self.go_straight_inches(inches, duty_cycle_percent, stop_action)
+
 
     def spin_in_place_degrees(self,
                               degrees,
