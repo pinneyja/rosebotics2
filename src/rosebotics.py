@@ -131,8 +131,9 @@ class DriveSystem(object):
         self.left_wheel.reset_degrees_spun()
         self.left_wheel.start_spinning(duty_cycle_percent)
         self.right_wheel.start_spinning(duty_cycle_percent * -1)
+        robdeg = degrees * 6.056
         while True:
-            if self.left_wheel.get_degrees_spun() >= degrees:
+            if self.left_wheel.get_degrees_spun() >= robdeg:
                 self.left_wheel.stop_spinning(stop_action)
                 self.right_wheel.stop_spinning(stop_action)
                 break
@@ -150,6 +151,7 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-degrees-turned.
         # TODO:   Assume that the conversion is linear with respect to speed.
+
 
 
 
