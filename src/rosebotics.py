@@ -106,7 +106,13 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-inches-moved.
         # TODO:   Assume that the conversion is linear with respect to speed.
-
+        self.left_wheel.reset_degrees_spun()
+        maxdeg = inches * 62
+        self.start_moving(duty_cycle_percent)
+        while True:
+            if self.left_wheel.get_degrees_spun() >= maxdeg:
+                self.stop_moving(stop_action)
+                break
 
 
     def spin_in_place_degrees(self,
@@ -122,6 +128,7 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-degrees-spun.
         # TODO:   Assume that the conversion is linear with respect to speed.
+
     def turn_degrees(self,
                      degrees,
                      duty_cycle_percent=100,
@@ -142,7 +149,6 @@ class ArmAndClaw(object):
         self.motor = ev3.MediumMotor(port)
         self.touch_sensor = touch_sensor
         self.calibrate()  # Sets the motor's position to 0 at the DOWN position.
-
 
     def calibrate(self):
         """
@@ -245,12 +251,14 @@ class ColorSensor(rb.ColorSensor):
 
 class InfraredSensorAsProximitySensor(object):
     """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
+
     def __init__(self, port=ev3.INPUT_4):
         super().__init__(port)
 
 
 class InfraredSensorAsBeaconSensor(object):
     """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
+
 
 class InfraredSensorAsBeaconButtonSensor(object):
     """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
