@@ -14,7 +14,7 @@ def main():
     robot.drive_system.left_wheel.start_spinning()
     robot.drive_system.right_wheel.start_spinning()
     while True:
-        if robot.drive_system.left_wheel.get_degrees_spun() >= 100:
+        if robot.drive_system.left_wheel.get_degrees_spun() >= 140:
             break
     robot.drive_system.left_wheel.stop_spinning()
     robot.drive_system.right_wheel.stop_spinning()
