@@ -30,6 +30,7 @@ def ngon(sides, side_length):
     for k in range(side_length):
         bot.drive_system.go_straight_inches(side_length)
         bot.drive_system.spin_in_place_degrees(degrees)
+    bot.drive_system.stop_moving()
 
 
 main()
