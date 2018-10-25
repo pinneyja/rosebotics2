@@ -9,15 +9,28 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    robot = rb.Snatch3rRobot()
-    robot.drive_system.left_wheel.reset_degrees_spun()
-    robot.drive_system.left_wheel.start_spinning()
-    robot.drive_system.right_wheel.start_spinning()
-    while True:
-        if robot.drive_system.left_wheel.get_degrees_spun() >= 140:
-            break
-    robot.drive_system.left_wheel.stop_spinning()
-    robot.drive_system.right_wheel.stop_spinning()
+    run_test_ngon()
+
+
+def run_test_ngon():
+    print('should make triangle')
+    ngon(3, 10)
+
+
+#    print('should make square')
+#    ngon(4, 10)
+
+#    print('should be pentagon')
+#    ngon(5, 5)
+
+
+def ngon(sides, side_length):
+    bot = rb.Snatch3rRobot()
+    degrees = 360 / sides
+    for k in range(side_length):
+        bot.drive_system.go_straight_inches(side_length)
+        bot.drive_system.spin_in_place_degrees(degrees)
+    bot.drive_system.stop_moving()
 
 
 main()
