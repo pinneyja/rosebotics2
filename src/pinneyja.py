@@ -10,11 +10,28 @@ import time
 def main():
     """ Runs YOUR specific part of the project """
     robot = rb.Snatch3rRobot()
-    robot.drive_system.left_wheel.reset_degrees_spun()
-    robot.drive_system.left_wheel.start_spinning(100)
+    follow_black_line(robot, False)
+
+
+def follow_black_line(robot, isCounterclockwise):
+    # isCounterclockwise == True then robot is turning left
+    # else                                  is turning right
+    # assumes robot is placed on black line to start
+
+    if isCounterclockwise:
+        value = -1
+    else:
+        value = 1
+
+    color = rb.Color.BLACK.value
     while True:
-        if robot.drive_system.left_wheel.get_degrees_spun() > 1150:
-            robot.drive_system.left_wheel.stop_spinning()
-            break
+        robot.drive_system.start_moving(30, 30)
+        if robot.color_sensor.get_color() != color:
+            robot.drive_system.stop_moving()
+            while True:
+                robot.drive_system.spin_in_place_degrees(value)
+                if robot.color_sensor.get_color() == color:
+                    break
+
 
 main()
