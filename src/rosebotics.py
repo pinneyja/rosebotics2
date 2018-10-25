@@ -114,7 +114,6 @@ class DriveSystem(object):
                 self.stop_moving(stop_action)
                 break
 
-
     def spin_in_place_degrees(self,
                               degrees,
                               duty_cycle_percent=100,
@@ -151,8 +150,13 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-degrees-turned.
         # TODO:   Assume that the conversion is linear with respect to speed.
-
-
+        self.right_wheel.reset_degrees_spun()
+        self.right_wheel.start_spinning(duty_cycle_percent)
+        robodeg = degrees * 12.777
+        while True:
+            if self.right_wheel.get_degrees_spun() >= robodeg:
+                self.right_wheel.stop_spinning(stop_action)
+                break
 
 
 class ArmAndClaw(object):
