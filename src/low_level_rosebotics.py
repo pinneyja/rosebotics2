@@ -58,7 +58,7 @@ class Wheel(object):
         """
         if stop_action is None:
             stop_action = self.default_stop_action
-        self.motor.stop(stop_action=stop_action.value)
+        self.motor.stop(stop_action=stop_action)
 
     def get_degrees_spun(self):
         return self.motor.position
