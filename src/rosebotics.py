@@ -111,7 +111,7 @@ class DriveSystem(object):
         self.start_moving(duty_cycle_percent)
         while True:
             if self.left_wheel.get_degrees_spun() >= maxdeg:
-                self.stop_moving(stop_action)
+                self.stop_moving()
                 break
 
     def spin_in_place_degrees(self,
