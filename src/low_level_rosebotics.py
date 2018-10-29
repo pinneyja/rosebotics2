@@ -56,8 +56,9 @@ class Wheel(object):
 
           :type  stop_action:  StopAction
         """
-        if stop_action is None:
-            stop_action = self.default_stop_action
+        # TODO if stop_action is None:
+        # TODO stop_action = self.default_stop_action
+        stop_action = ev3.Motor.STOP_ACTION_BRAKE
         self.motor.stop(stop_action=stop_action)
 
     def get_degrees_spun(self):

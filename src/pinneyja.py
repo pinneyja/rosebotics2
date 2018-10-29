@@ -27,7 +27,7 @@ def follow_black_line(robot, isCounterclockwise):
     while True:
         robot.drive_system.start_moving(30, 30)
         if robot.color_sensor.get_color() != color:
-            robot.drive_system.stop_moving("brake")
+            robot.drive_system.stop_moving()
             while True:
                 robot.drive_system.spin_in_place_degrees(value)
                 if robot.color_sensor.get_color() == color:
