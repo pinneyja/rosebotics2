@@ -42,7 +42,7 @@ class Snatch3rRobot(object):
                  color_sensor_port=ev3.INPUT_3,
                  infrared_sensor_port=ev3.INPUT_4):
         # All the methods in this class "delegate" their work to the appropriate
-        # subsystem:  drive_system, touch_sensor, camera, olor_sensor, etc.
+        # subsystem:  drive_system, touch_sensor, camera, color_sensor, etc.
         self.drive_system = DriveSystem(left_wheel_port, right_wheel_port)
         # self.arm = ArmAndClaw(arm_port)
         self.touch_sensor = TouchSensor(touch_sensor_port)
