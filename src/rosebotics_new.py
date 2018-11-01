@@ -164,17 +164,12 @@ class DriveSystem(object):
     def start_moving(self,
                      left_wheel_duty_cycle_percent=100,
                      right_wheel_duty_cycle_percent=100):
-        """
-        STARTS the robot MOVING at the given wheel speeds
-        (-100 to 100, where negative means spinning backward).
-        """
+        """ Start moving at the given wheel speeds (-100 to 100)."""
         self.left_wheel.start_spinning(left_wheel_duty_cycle_percent)
         self.right_wheel.start_spinning(right_wheel_duty_cycle_percent)
 
-    def stop_moving(self, stop_action=StopAction.BRAKE.value):
-        """
-        STOPS the robot, using the given StopAction (which defaults to BRAKE).
-        """
+    def stop_moving(self, stop_action=StopAction.BRAKE):
+        """ Stop moving, using the given StopAction. """
         self.left_wheel.stop_spinning(stop_action)
         self.right_wheel.stop_spinning(stop_action)
 
@@ -184,13 +179,10 @@ class DriveSystem(object):
                          right_wheel_duty_cycle_percent=100,
                          stop_action=StopAction.BRAKE):
         """
-        Makes the robot MOVE for the given number of SECONDS at the given
-        wheel speeds (-100 to 100, where negative means spinning backward),
-        stopping using the given StopAction (which defaults to BRAKE).
+        Move for the given number of seconds at the given wheel speeds.
+        Speeds are -100 to 100, where negative means moving backwards.
         """
-        self.start_moving(left_wheel_duty_cycle_percent,
-                          right_wheel_duty_cycle_percent)
-        # For pedagogical purposes, we use a WHILE loop to keep going for a
+        # For pedagogical purposes, we use a WHILE loop to keep  going for a
         # given number of seconds, instead of using the simpler alternative:
         #      time.sleep(seconds)
         self.start_moving(left_wheel_duty_cycle_percent,
@@ -198,7 +190,7 @@ class DriveSystem(object):
         start_time = time.time()
         while True:
             if time.time() - start_time > seconds:
-                self.stop_moving(stop_action.value)
+                self.stop_moving(stop_action)
                 break
 
     def go_straight_inches(self,
@@ -206,54 +198,63 @@ class DriveSystem(object):
                            duty_cycle_percent=100,
                            stop_action=StopAction.BRAKE):
         """
-        Makes the robot GO STRAIGHT for the given number of INCHES
-        at the given speed (-100 to 100, where negative means moving backward),
-        stopping using the given StopAction (which defaults to BRAKE).
+        Go straight at the given speed (-100 to 100, negative is backwards)
+        for the given number of inches, stopping with the given StopAction.
         """
-        # TODO: Use one of the Wheel object's   get_degrees_spun   method.
         # TODO: Do a few experiments to determine the constant that converts
-        # TODO:   from wheel-DEGREES-spun to robot-INCHES-moved.
+        # TODO:   from wheel-degrees-spun to robot-inches-moved.
         # TODO:   Assume that the conversion is linear with respect to speed.
-        # TODO: Don't forget that the Wheel object's position begins wherever
-        # TODO:   it last was, not necessarily 0.
+        self.left_wheel.reset_degrees_spun()
+        maxdeg = inches * 62
+        self.start_moving(duty_cycle_percent)
+        while True:
+            if self.left_wheel.get_degrees_spun() >= maxdeg:
+                self.stop_moving()
+                break
 
     def spin_in_place_degrees(self,
                               degrees,
                               duty_cycle_percent=100,
                               stop_action=StopAction.BRAKE):
         """
-        Makes the robot SPIN IN PLACE for the given number of DEGREES
-        at the given speed (-100 to 100, where POSITIVE means CLOCKWISE
-        and NEGATIVE means COUNTER-CLOCKWISE),
-        stopping using the given StopAction (which defaults to BRAKE).
-        "Spinning in place" means that both wheels spin at the same speed
-        but in opposite directions.
+        Spin in place (i.e., both wheels move, in opposite directions)
+        the given number of degrees, at the given speed (-100 to 100,
+        where positive is clockwise and negative is counter-clockwise),
+        stopping by using the given StopAction.
         """
-        # TODO: Use one of the Wheel object's   get_degrees_spun   method.
         # TODO: Do a few experiments to determine the constant that converts
-        # TODO:   from WHEEL-degrees-spun to ROBOT-degrees-spun.
+        # TODO:   from wheel-degrees-spun to robot-degrees-spun.
         # TODO:   Assume that the conversion is linear with respect to speed.
-        # TODO: Don't forget that the Wheel object's position begins wherever
-        # TODO:   it last was, not necessarily 0.
+        self.left_wheel.reset_degrees_spun()
+        self.left_wheel.start_spinning(duty_cycle_percent)
+        self.right_wheel.start_spinning(duty_cycle_percent * -1)
+        robdeg = degrees * 6.056
+        while True:
+            if self.left_wheel.get_degrees_spun() >= robdeg:
+                self.left_wheel.stop_spinning(stop_action)
+                self.right_wheel.stop_spinning(stop_action)
+                break
 
     def turn_degrees(self,
                      degrees,
                      duty_cycle_percent=100,
                      stop_action=StopAction.BRAKE):
         """
-        Makes the robot TURN for the given number of DEGREES
-        at the given speed (-100 to 100, where POSITIVE means CLOCKWISE
-        and NEGATIVE means COUNTER-CLOCKWISE),
-        stopping using the given StopAction (which defaults to BRAKE).
-        "Turning" means that both ONE wheel spins at the given speed and the
-        other wheel does NOT spin.
+        Turn (i.e., only one wheel moves)
+        the given number of degrees, at the given speed (-100 to 100,
+        where positive is clockwise and negative is counter-clockwise),
+        stopping by using the given StopAction.
         """
-        # TODO: Use the Wheel object's   get_degrees_spun   method.
         # TODO: Do a few experiments to determine the constant that converts
-        # TODO:   from WHEEL-degrees-SPUN to ROBOT-degrees-TURNED.
+        # TODO:   from wheel-degrees-spun to robot-degrees-turned.
         # TODO:   Assume that the conversion is linear with respect to speed.
-        # TODO: Don't forget that the Wheel object's position begins wherever
-        # TODO:   it last was, not necessarily 0.
+        self.right_wheel.reset_degrees_spun()
+        self.right_wheel.start_spinning(duty_cycle_percent)
+        robodeg = degrees * 12.777
+        while True:
+            if self.right_wheel.get_degrees_spun() >= robodeg:
+                self.right_wheel.stop_spinning(stop_action)
+                break
 
 
 class TouchSensor(low_level_rb.TouchSensor):
@@ -272,11 +273,15 @@ class TouchSensor(low_level_rb.TouchSensor):
 
     def wait_until_pressed(self):
         """ Waits (doing nothing new) until the touch sensor is pressed. """
-        # TODO.
+        while True:
+            if self.sensor.is_pressed:
+                return
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
-        # TODO
+        while True:
+            if not self.sensor.is_pressed:
+                return
 
 
 class ColorSensor(low_level_rb.ColorSensor):
@@ -332,7 +337,9 @@ class ColorSensor(low_level_rb.ColorSensor):
         light intensity is less than the given value (threshold), which should
         be between 0 (no light reflected) and 100 (maximum light reflected).
         """
-        # TODO.
+        while True:
+            if self.get_reflected_intensity() < reflected_light_intensity:
+                return
 
     def wait_until_intensity_is_greater_than(self, reflected_light_intensity):
         """
@@ -340,7 +347,9 @@ class ColorSensor(low_level_rb.ColorSensor):
         light intensity is greater than the given value (threshold), which
         should be between 0 (no light reflected) and 100 (max light reflected).
         """
-        # TODO.
+        while True:
+            if self.get_reflected_intensity() > reflected_light_intensity:
+                return
 
     def wait_until_color_is(self, color):
         """
@@ -348,7 +357,9 @@ class ColorSensor(low_level_rb.ColorSensor):
         of what color it sees is the given color.
         The given color must be a Color (as defined above).
         """
-        # TODO.
+        while True:
+            if self.get_color() == color:
+                return
 
     def wait_until_color_is_one_of(self, colors):
         """
@@ -356,7 +367,10 @@ class ColorSensor(low_level_rb.ColorSensor):
         of what color it sees is any one of the given sequence of colors.
         Each item in the sequence must be a Color (as defined above).
         """
-        # TODO.
+        while True:
+            for color in colors:
+                if self.get_color() == color:
+                    return
 
 
 class Camera(object):

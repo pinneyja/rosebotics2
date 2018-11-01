@@ -9,7 +9,7 @@
 
 from ev3dev import ev3
 from enum import Enum
-import low_level_rosebotics as rb
+import low_level_rosebotics as low_level_rb
 import time
 
 
@@ -60,8 +60,8 @@ class DriveSystem(object):
     def __init__(self,
                  left_wheel_port=ev3.OUTPUT_B,
                  right_wheel_port=ev3.OUTPUT_C):
-        self.left_wheel = rb.Wheel(left_wheel_port)
-        self.right_wheel = rb.Wheel(right_wheel_port)
+        self.left_wheel = low_level_rb.Wheel(left_wheel_port)
+        self.right_wheel = low_level_rb.Wheel(right_wheel_port)
 
     def start_moving(self,
                      left_wheel_duty_cycle_percent=100,
@@ -193,7 +193,40 @@ class ArmAndClaw(object):
         # TODO
 
 
-class TouchSensor(rb.TouchSensor):
+class TouchSensor(low_level_rb.TouchSensor):
+    # class ArmAndClaw(object):
+    #     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
+    #         self.motor = ev3.MediumMotor(port)
+    #         self.touch_sensor = touch_sensor
+    #         self.calibrate()  # Sets the motor's position to 0 at the DOWN position.
+    #
+    #
+    #     def calibrate(self):
+    #         """
+    #         Raise the arm to until the touch sensor is pressed.
+    #         Then lower the arm XXX units.
+    #         Set the motor's position to 0 at that point.
+    #         (Hence, 0 means all the way DOWN and XXX means all the way UP).
+    #         """
+    #         #
+    #
+    #     def raise_arm_and_close_claw(self):
+    #         """
+    #         Raise the arm (and hence close the claw).
+    #         Stop when the touch sensor is pressed.
+    #         """
+    #         #
+    #
+    #     def lower_arm_and_open_claw(self):
+    #         """
+    #         Raise the arm (and hence close the claw).
+    #         Stop when the touch sensor is pressed.
+    #         """
+    #         #
+    #
+    #     def move_arm_to_position(self, position):
+    #         """ Spin the arm's motor until it reaches the given position. """
+    #         #
     """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
 
     def __init__(self, port=ev3.INPUT_1):
@@ -216,7 +249,8 @@ class Camera(object):
     """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
 
 
-class ColorSensor(rb.ColorSensor):
+
+class ColorSensor(low_level_rb.ColorSensor):
     """ Primary author of this class:  Jacob Pinney. """
 
     def __init__(self, port=ev3.INPUT_3):
