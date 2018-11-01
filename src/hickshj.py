@@ -13,12 +13,12 @@ def main():
 
 
 def run_test_ngon():
-    print('should make triangle')
-    ngon(3, 10)
+    #    print('should make triangle')
+    #    ngon(3, 10)
 
+    print('should make square')
+    ngon(4, 10)
 
-#    print('should make square')
-#    ngon(4, 10)
 
 #    print('should be pentagon')
 #    ngon(5, 5)
