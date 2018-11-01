@@ -33,13 +33,13 @@ def ngon(sides, side_length):
 
 
 def distance_beep():
-    bot = rb.Snatch3rRobot
-    sensor = rb.InfraredAsProximitySensor(4)
+    sensor = rb.InfraredAsProximitySensor('in4')
     while True:
         d = sensor.get_distance_to_nearest_object_in_inches()
-        print(d)
         if 11 <= d <= 13:
             ev3.Sound.beep().wait()
+            print(d)
+            break
 
 
 main()
