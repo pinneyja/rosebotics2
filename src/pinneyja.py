@@ -9,18 +9,35 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
+    run_test_one = False
+    run_test_two = False
+    run_test_three = False
+
     robot = rb.Snatch3rRobot()
-    #follow_black_line(robot, False)
-    #robot.arm.raise_arm_and_close_claw()
-    robot.arm.calibrate()
+
+    # Test follow black line function
+    if run_test_one:
+        follow_black_line(robot, False)
+
+    # Test raise arm and close claw & calibrate methods
+    if run_test_two:
+        robot.arm.raise_arm_and_close_claw()
+        robot.arm.calibrate()
+
+    # Test move arm to position functions
+    if run_test_three:
+        robot.arm.move_arm_to_position(5112)
+        robot.arm.move_arm_to_position(0)
+        robot.arm.move_arm_to_position(3000)
+        robot.arm.move_arm_to_position(0)
 
 
-def follow_black_line(robot, isCounterclockwise):
+def follow_black_line(robot, is_counterclockwise):
     # isCounterclockwise == True then robot is turning left
     # else                                  is turning right
     # assumes robot is placed on black line to start
 
-    if isCounterclockwise:
+    if is_counterclockwise:
         value = -1
     else:
         value = 1

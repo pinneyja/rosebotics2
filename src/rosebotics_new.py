@@ -695,7 +695,7 @@ class ArmAndClaw(object):
         self.motor.start_spinning(-100)
         while True:
             print(self.motor.get_degrees_spun())
-            if math.fabs(self.motor.get_degrees_spun()) > 14.2*360:
+            if math.fabs(self.motor.get_degrees_spun()) > (14.2*360):
                 break
         self.motor.reset_degrees_spun()
         self.motor.stop_spinning()
@@ -717,4 +717,19 @@ class ArmAndClaw(object):
         Spin the arm's motor until it reaches the given position.
         Move at a reasonable speed.
         """
-        # TODO: Do this as STEP 3 of implementing this class.
+        # DONE: Do this as STEP 3 of implementing this class.
+        directional_factor = 1
+        if position < self.motor.get_degrees_spun():
+            directional_factor = -1
+
+        if position < 0:
+            position = 0
+
+        self.motor.start_spinning(100 * directional_factor)
+        while True:
+            condition_one = position == self.motor.get_degrees_spun()
+            condition_two = (position * directional_factor) < (self.motor.get_degrees_spun() * directional_factor)
+
+            if condition_one | condition_two:
+                break
+        self.motor.stop_spinning()
