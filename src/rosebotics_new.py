@@ -295,7 +295,6 @@ class ColorSensor(low_level_rb.ColorSensor):
     def __init__(self, port=ev3.INPUT_3):
         super().__init__(port)
 
-
     def get_color(self):
         """
         Returns its best guess as to the color of the object upon which it is
