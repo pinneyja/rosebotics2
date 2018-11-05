@@ -148,7 +148,7 @@ class DriveSystem(object):
     """
     A class for driving (moving) the robot.
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
-       their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
+       their colleagues, the entire team, and Hunter Hicks.
     """
 
     # TODO: In the above line, put the name of the primary author of this class.
