@@ -4,14 +4,16 @@
 """
 
 import rosebotics_new as rb
+import ev3dev.ev3 as ev3
 import time
 
 
 def main():
     """ Runs YOUR specific part of the project """
     robot = rb.Snatch3rRobot()
-    color1 = rb.Color.BROWN.value
-    find_color(color1, robot)
+    #color1 = rb.Color.BROWN.value
+    #find_color(color1, robot)
+    object_area(robot)
 
 
 def find_color(color, robo):
@@ -22,5 +24,11 @@ def find_color(color, robo):
             break
 
 
+def object_area(robo):
+    inches = 1
+    while True:
+        print(robo.camera.get_biggest_blob().get_area())
+        if robo.camera.get_biggest_blob().get_area() >= (96 * inches)**2:
+            ev3.Sound.beep().wait()
 
 main()
