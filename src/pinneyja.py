@@ -10,7 +10,9 @@ import time
 def main():
     """ Runs YOUR specific part of the project """
     robot = rb.Snatch3rRobot()
-    follow_black_line(robot, False)
+    #follow_black_line(robot, False)
+    #robot.arm.raise_arm_and_close_claw()
+    robot.arm.calibrate()
 
 
 def follow_black_line(robot, isCounterclockwise):

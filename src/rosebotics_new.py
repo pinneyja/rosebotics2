@@ -14,6 +14,7 @@ from ev3dev import ev3
 from enum import Enum
 import low_level_rosebotics_new as low_level_rb
 import time
+import math
 
 # ------------------------------------------------------------------------------
 # Global constants.  Reference them as (for example):  rb.BRAKE   rb.GREEN
@@ -688,7 +689,16 @@ class ArmAndClaw(object):
         again at a reasonable speed. Then set the motor's position to 0.
         (Hence, 0 means all the way DOWN and 14.2 * 360 means all the way UP).
         """
-        # TODO: Do this as STEP 2 of implementing this class.
+        # DONE: Do this as STEP 2 of implementing this class.
+        self.raise_arm_and_close_claw()
+        self.motor.reset_degrees_spun()
+        self.motor.start_spinning(-100)
+        while True:
+            print(self.motor.get_degrees_spun())
+            if math.fabs(self.motor.get_degrees_spun()) > 14.2*360:
+                break
+        self.motor.reset_degrees_spun()
+        self.motor.stop_spinning()
 
     def raise_arm_and_close_claw(self):
         """
@@ -697,7 +707,10 @@ class ArmAndClaw(object):
         Positive speeds make the arm go UP; negative speeds make it go DOWN.
         Stop when the touch sensor is pressed.
         """
-        # TODO: Do this as STEP 1 of implementing this class.
+        # DONE: Do this as STEP 1 of implementing this class.
+        self.motor.start_spinning(100)
+        self.touch_sensor.wait_until_pressed()
+        self.motor.stop_spinning()
 
     def move_arm_to_position(self, position):
         """
