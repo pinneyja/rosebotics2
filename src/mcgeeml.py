@@ -26,6 +26,7 @@ def find_color(color, robo):
 
 def object_area(robo):
     while True:
+        print(robo.camera.get_biggest_blob().get_area())
         if robo.camera.get_biggest_blob().get_area() >= 12:
             ev3.Sound.beep().wait()
 
