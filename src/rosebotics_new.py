@@ -724,6 +724,8 @@ class ArmAndClaw(object):
 
         if position < 0:
             position = 0
+        if position > 5112:
+            position = 5112
 
         self.motor.start_spinning(100 * directional_factor)
         while True:
