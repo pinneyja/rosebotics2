@@ -215,7 +215,9 @@ class DriveSystem(object):
     def spin_in_place_degrees(self,
                               degrees,
                               duty_cycle_percent=100,
-                              stop_action=StopAction.BRAKE):
+                              stop_action=StopAction.BRAKE,
+                              collect_sonar=False,
+                              robot=None):
         """
         Spin in place (i.e., both wheels move, in opposite directions)
         the given number of degrees, at the given speed (-100 to 100,
@@ -225,11 +227,17 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-degrees-spun.
         # TODO:   Assume that the conversion is linear with respect to speed.
+        degrees_to_robdeg = 6.056
         self.left_wheel.reset_degrees_spun()
         self.left_wheel.start_spinning(duty_cycle_percent)
         self.right_wheel.start_spinning(duty_cycle_percent * -1)
-        robdeg = degrees * 6.056
+        robdeg = degrees * degrees_to_robdeg
+        data_set = []
         while True:
+            if collect_sonar & robot is not None:
+                data_one = self.left_wheel.get_degrees_spun()/degrees_to_robdeg
+                data_two = robot.proximity_sensor.get_distance_to_nearest_object_in_inches()
+                data_set.append([(data_one, data_two)])
             if self.left_wheel.get_degrees_spun() >= robdeg:
                 self.left_wheel.stop_spinning(stop_action)
                 self.right_wheel.stop_spinning(stop_action)
