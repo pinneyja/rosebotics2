@@ -5,6 +5,8 @@
 
 import rosebotics_new as rb
 import time
+import rosegraphics as rg
+import math
 
 
 def main():
@@ -37,14 +39,36 @@ def main():
 
 
 def run_final_project(robot):
-    perform_sonar_scan(robot)
+    results = perform_sonar_scan(robot)
+    draw_sonar_image(results)
     pass
 
 
 def perform_sonar_scan(robot):
-
     return robot.drive_system.spin_in_place_degrees(360, collect_sonar=True, robot=robot)
 
+
+def draw_sonar_image(seq_of_seq):
+    points = []
+    for seq in seq_of_seq:
+        degrees = seq[0]
+        distance = seq[1]
+        x_position = distance * math.cos(degrees)
+        y_position = distance * math.sin(degrees)
+        point = rg.Point(x_position, y_position)
+        points.append(point)
+    window = rg.RoseWindow()
+    for point in points:
+        point.attach_to(window)
+        window.render()
+    for k in range(len(points)):
+        if k == len(points):
+            line = rg.Line(points[k], points[0])
+        else:
+            line = rg.Line(points[k], points[k+1])
+        line.attach_to(window)
+        window.render()
+    # TODO loop through sequence of points and draw them and lines between them
 
 def follow_black_line(robot, is_counterclockwise):
     if is_counterclockwise:
