@@ -42,12 +42,12 @@ def main():
         # TODO:    speak "Hello. How are you?" if the top-blue button on the
         # TODO:    Beacon is pressed.  Test.  When done, delete this TODO.
         # ----------------------------------------------------------------------
-        if rb.TOP_RED_BUTTON() is True:
+        if bot.beacon_button_sensor.is_top_red_button_pressed():
             ev3.Sound.beep().wait()
-        if rb.TOP_BLUE_BUTTON() is True:
-            ev3.Sound.speak('Hello. How are you?')
-
-        time.sleep(0.01)  # For the delegate to do its work
+            time.sleep(0.01)
+        if bot.beacon_button_sensor.is_top_blue_button_pressed():
+            ev3.Sound.speak('Hello. How are you?').wait()
+            time.sleep(0.01)
 
 
 class RemoteControlEtc(object):

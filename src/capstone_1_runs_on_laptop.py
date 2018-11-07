@@ -27,20 +27,6 @@ Authors:  David Mutchler, his colleagues, and Hunter Hicks.
 # TODO:  Once you understand the "big picture", delete this TODO (if you wish).
 # ------------------------------------------------------------------------------
 
-# ------------------------------------------------------------------------------
-# TODO: 3. One team member: change the following in mqtt_remote_method_calls.py:
-#                LEGO_NUMBER = 99
-# TODO:    to use YOUR robot's number instead of 99.
-# TODO:    Commit and push the change, then other team members Update Project.
-# TODO:    Then delete this TODO.
-# ------------------------------------------------------------------------------
-
-# ------------------------------------------------------------------------------
-# TODO: 4. Run this module.
-# TODO:    Study its code until you understand how the GUI is set up.
-# TODO:    Then delete this TODO.
-# ------------------------------------------------------------------------------
-
 import tkinter
 from tkinter import ttk
 import mqtt_remote_method_calls as com
@@ -65,12 +51,16 @@ def setup_gui(root_window, client):
 
     speed_entry_box = ttk.Entry(frame)
     go_forward_button = ttk.Button(frame, text="Go forward")
+    stop_button = ttk.Button(frame, text="Stop")
 
     speed_entry_box.grid()
     go_forward_button.grid()
+    stop_button.grid()
 
     go_forward_button['command'] = \
         lambda: handle_go_forward(speed_entry_box, client)
+    stop_button['command'] = \
+        lambda: handle_stop(client)
 
 
 def handle_go_forward(speed_entry_box, client):
@@ -80,6 +70,10 @@ def handle_go_forward(speed_entry_box, client):
     speed_string = speed_entry_box.get()
     print('Speed is: ', speed_string)
     client.send_message('go', [speed_string])
+
+
+def handle_stop(mqtt_obj):
+    mqtt_obj.send_message("stop", [])
 
 
 main()
