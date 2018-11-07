@@ -15,7 +15,7 @@ def main():
 
 def run_tests():
     """ Runs various tests. """
-    # run_test_ir()
+    run_test_ir()
     run_test_drive_system()
     # run_test_touch_sensor()
     # run_test_color_sensor()
@@ -46,8 +46,12 @@ def run_test_ir():
         #    beacon_sensor  NOT YET IMPLEMENTED
         #    beacon_button_sensor  NOT YET IMPLEMENTED
         print("Touch sensor:",
-              robot.touch_sensor.get_value(),
-              robot.touch_sensor.is_pressed())
+              robot.beacon_sensor.get_heading_to_beacon(),
+              robot.beacon_sensor.get_distance_to_beacon(),
+              robot.beacon_button_sensor.is_bottom_blue_button_pressed(),
+              robot.beacon_button_sensor.is_bottom_red_button_pressed(),
+              robot.beacon_button_sensor.is_top_blue_button_pressed(),
+              robot.beacon_button_sensor.is_top_red_button_pressed())
 
         character = input(
             "Press the ENTER (return) key to continue, or q to quit: ")

@@ -5,12 +5,13 @@
 
 import rosebotics_new as rb
 import ev3dev.ev3 as ev3
+import time
 
 
 def main():
     """ Runs YOUR specific part of the project """
-    #    run_test_ngon()
-    distance_beep()
+    # run_test_ngon()
+    # distance_beep()
 
 
 def run_test_ngon():
@@ -40,6 +41,14 @@ def distance_beep():
             ev3.Sound.beep().wait()
             print(d)
             break
+
+
+def chase():
+    bot = rb.Snatch3rRobot()
+    color = bot.camera.set_signature('color')
+    time.sleep(1)
+    while True:
+        bot.drive_system.spin_in_place_degrees(360)
 
 
 main()
