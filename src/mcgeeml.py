@@ -10,10 +10,10 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    robot = rb.Snatch3rRobot()
+    #robot = rb.Snatch3rRobot()
     #color1 = rb.Color.BROWN.value
     #find_color(color1, robot)
-    object_area(robot)
+    #object_area(robot)
 
 
 def find_color(color, robo):

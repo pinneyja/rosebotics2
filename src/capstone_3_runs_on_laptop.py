@@ -5,10 +5,10 @@ Mini-application:  Buttons on a Tkinter GUI tell the robot to:
 This module runs on your LAPTOP.
 It uses MQTT to SEND information to a program running on the ROBOT.
 
-Authors:  David Mutchler, his colleagues, and PUT_YOUR_NAME_HERE.
+Authors:  David Mutchler, his colleagues, and Myon McGee.
 """
 # ------------------------------------------------------------------------------
-# TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.  Then delete this TODO.
+# done: 1. PUT YOUR NAME IN THE ABOVE LINE.
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
@@ -52,7 +52,11 @@ import mqtt_remote_method_calls as com
 def main():
     """ Constructs and runs a GUI for this program. """
     root = tkinter.Tk()
-    setup_gui(root)
+
+    mqtt_client = com.MqttClient()
+    mqtt_client.connect_to_ev3()
+
+    setup_gui(root, mqtt_client)
 
     root.mainloop()
     # --------------------------------------------------------------------------
@@ -62,7 +66,7 @@ def main():
     # --------------------------------------------------------------------------
 
 
-def setup_gui(root_window):
+def setup_gui(root_window, user):
     """ Constructs and sets up widgets on the given window. """
     frame = ttk.Frame(root_window, padding=10)
     frame.grid()
@@ -74,13 +78,16 @@ def setup_gui(root_window):
     go_forward_button.grid()
 
     go_forward_button['command'] = \
-        lambda: handle_go_forward()
+        lambda: handle_go_forward(speed_entry_box, user)
 
 
-def handle_go_forward():
+def handle_go_forward(speed_input, mqtt_client):
     """
     Tells the robot to go forward at the speed specified in the given entry box.
     """
+    speed_string = speed_input.get()
+    print('sending go_forward message with speed')
+    mqtt_client.send_message('go_forward', [speed_string])
     # --------------------------------------------------------------------------
     # TODO: 6. This function needs the entry box in which the user enters
     # TODO:    the speed at which the robot should move.  Make the 2 changes
@@ -94,6 +101,8 @@ def handle_go_forward():
     # TODO:    necessary for that object to make its way to this function.
     # TODO:    When done, delete this TODO.
     # --------------------------------------------------------------------------
+
+
 
     # --------------------------------------------------------------------------
     # TODO: 8. Add the single line of code needed to get the string that is
