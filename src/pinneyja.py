@@ -5,10 +5,10 @@
 
 import rosebotics_new as rb
 import time
-import random
-import rosegraphics as rg
-import math
-import tkinter as tk
+#import random
+#import rosegraphics as rg
+#import math
+#import tkinter as tk
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     if True:
         robot = rb.Snatch3rRobot()
         while True:
-            print(robot.proximity_sensor.get_distance_to_nearest_object())
+            print(robot.proximity_sensor.get_distance_to_nearest_object_in_inches())
 
     # Test follow black line function
     if run_test_black_line:

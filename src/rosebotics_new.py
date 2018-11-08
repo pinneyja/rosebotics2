@@ -511,7 +511,7 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
         in inches, where about 39.37 inches (which is 100 cm) means no object
         is within its field of vision.
         """
-        return (self.get_distance_to_nearest_object() / 100) * 24
+        return (self.get_distance_to_nearest_object() / 100) * 23.622
 
 
 class InfraredAsBeaconSensor(object):
