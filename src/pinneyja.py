@@ -21,6 +21,8 @@ def main():
 
     if True:
         robot = rb.Snatch3rRobot()
+        while True:
+            print(robot.proximity_sensor.get_distance_to_nearest_object())
 
     # Test follow black line function
     if run_test_black_line:

@@ -38,10 +38,10 @@ def distance_beep():
     bot = rb.Snatch3rRobot()
 
     while True:
-        d = bot.proximity_sensor.get_distance_to_nearest_object_in_inches()
-        if 11 <= d <= 13:
-            ev3.Sound.beep().wait()
-            print(d)
+        if 11 <= bot.proximity_sensor.get_distance_to_nearest_object_in_inches() <= 13:
+            print(bot.proximity_sensor.get_distance_to_nearest_object_in_inches())
+            ev3.Sound.beep()
+            break
 
 
 def chase():
