@@ -8,6 +8,7 @@ import time
 import random
 import rosegraphics as rg
 import math
+import tkinter as tk
 
 
 def main():
@@ -16,9 +17,9 @@ def main():
     run_test_arm_claw = False
     run_test_arm_claw_advanced = False
     run_test_final_project = False
-    run_localized_final_tests = True
+    run_localized_final_tests = False
 
-    if False:
+    if True:
         robot = rb.Snatch3rRobot()
 
     # Test follow black line function
@@ -114,5 +115,47 @@ def follow_black_line(robot, is_counterclockwise):
                 if robot.color_sensor.get_color() == color:
                     break
 
+
+def tkinter_listener(robot):
+    root = tk.Tk()
+    main_frame = tk.Frame(root)
+    button = tk.Button(main_frame, text="Execute Sonar Scan")
+    button["command"] = lambda: perform_sonar_scan(robot)
+    root.bind_all('<KeyPress>', lambda event: pressed_a_key(event))
+    root.bind_all('<KeyRelease>', lambda event: released_a_key(event))
+
+    # --------------------------------------------------------------------
+    # To bind a particular key, simply specify the key (see below).
+    #
+    # WARNING: If you bind multiple functions to the same widget and
+    # event, various things can happen (see your instructor or the link
+    # in the comment at the top of this module if you need details).
+    #
+    # For an ordinary 102-key PC-style keyboard, the special keys are
+    # Cancel (the Break key), BackSpace, Tab, Return(the Enter key),
+    # Shift_L (any Shift key), Control_L (any Control key),
+    # Alt_L (any Alt key), Pause, Caps_Lock, Escape, Prior (Page Up),
+    # Next (Page Down), End, Home, Left, Up, Right, Down, Print, Insert,
+    # Delete, F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12,
+    # Num_Lock, and Scroll_Lock.
+    # For other key names, see Section 30.5 in the document referenced
+    # at the top of this module, and also perhaps Table 7.1 of
+    #   www.pythonware.com/library/tkinter/introduction/events-and-bindings.htm
+    # --------------------------------------------------------------------------
+    root.bind_all('<Key-Up>', lambda event: print("I'm up"))
+    root.bind_all('<Key-Down>', lambda event: print("I'm down"))
+    root.bind_all('<Key-Left>', lambda event: print("I'm left"))
+    root.bind_all('<Key-Right>', lambda event: print("I'm right"))
+
+    root.mainloop()
+
+
+def pressed_a_key(event):
+    # Notice how you can find out the key that was pressed.
+    print('You pressed the', event.keysym, 'key')
+
+
+def released_a_key(event):
+    print('You released the', event.keysym, 'key')
 
 main()

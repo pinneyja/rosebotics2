@@ -234,7 +234,7 @@ class DriveSystem(object):
         robdeg = degrees * degrees_to_robdeg
         data_set = []
         while True:
-            if collect_sonar & robot is not None:
+            if collect_sonar & (robot is not None):
                 data_one = self.left_wheel.get_degrees_spun()/degrees_to_robdeg
                 data_two = robot.proximity_sensor.get_distance_to_nearest_object_in_inches()
                 data_set.append([(data_one, data_two)])
@@ -512,7 +512,7 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
         is within its field of vision.
         """
         inches_per_cm = 2.54
-        return (70 ** self.get_distance_to_nearest_object()) / (100 * inches_per_cm)
+        return 70 * inches_per_cm * self.get_distance_to_nearest_object() / 100
 
 
 class InfraredAsBeaconSensor(object):
