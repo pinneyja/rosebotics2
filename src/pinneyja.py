@@ -5,10 +5,10 @@
 
 import rosebotics_new as rb
 import time
-#import random
-#import rosegraphics as rg
-#import math
-#import tkinter as tk
+# import random
+# import rosegraphics as rg
+# import math
+# import tkinter as tk
 
 
 def main():
@@ -17,11 +17,11 @@ def main():
     run_test_arm_claw = False
     run_test_arm_claw_advanced = False
     run_test_final_project = False
-    run_localized_final_tests = False
+    run_localized_final_tests = True
 
     if True:
         robot = rb.Snatch3rRobot()
-        while True:
+        while False:
             print(robot.proximity_sensor.get_distance_to_nearest_object_in_inches())
 
     # Test follow black line function
@@ -44,7 +44,10 @@ def main():
         run_final_project(robot)
 
     if run_localized_final_tests:
-        draw_sonar_image(random_method())
+        # draw_sonar_image(random_method())
+        print(robot.drive_system.spin_in_place_degrees(360, collect_sonar=True, robot=robot))
+        pass
+
 
 
 def random_method():

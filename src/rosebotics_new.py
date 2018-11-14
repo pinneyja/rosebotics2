@@ -150,8 +150,6 @@ class DriveSystem(object):
        their colleagues, the entire team, and Hunter Hicks.
     """
 
-    # TODO: In the above line, put the name of the primary author of this class.
-
     def __init__(self,
                  left_wheel_port=ev3.OUTPUT_B,
                  right_wheel_port=ev3.OUTPUT_C):
@@ -227,7 +225,7 @@ class DriveSystem(object):
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-degrees-spun.
         # TODO:   Assume that the conversion is linear with respect to speed.
-        degrees_to_robdeg = 6.056
+        degrees_to_robdeg = 5.09
         self.left_wheel.reset_degrees_spun()
         self.left_wheel.start_spinning(duty_cycle_percent)
         self.right_wheel.start_spinning(duty_cycle_percent * -1)
@@ -235,13 +233,15 @@ class DriveSystem(object):
         data_set = []
         while True:
             if collect_sonar & (robot is not None):
-                data_one = self.left_wheel.get_degrees_spun()/degrees_to_robdeg
+                data_one = (self.left_wheel.get_degrees_spun()/degrees_to_robdeg) // 1
                 data_two = robot.proximity_sensor.get_distance_to_nearest_object_in_inches()
-                data_set.append([(data_one, data_two)])
+                data_set.append([data_one, data_two])
             if self.left_wheel.get_degrees_spun() >= robdeg:
                 self.left_wheel.stop_spinning(stop_action)
                 self.right_wheel.stop_spinning(stop_action)
                 break
+        if collect_sonar & (robot is not None):
+            return data_set
 
     def turn_degrees(self,
                      degrees,

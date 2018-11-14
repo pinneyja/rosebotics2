@@ -9,6 +9,9 @@ class DelegateThatReceives(object):
     def say_it(self, message):
         print("Message received!", message)
 
+    def go(self, arg1, arg2):
+        print(arg1, arg2)
+
 
 def main():
     name1 = input("Enter one name: ")
