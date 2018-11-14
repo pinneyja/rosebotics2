@@ -55,13 +55,14 @@ def main():
     # TODO:    that appears to do nothing, is necessary.
     # TODO:    When you understand this, delete this TODO.
     # --------------------------------------------------------------------------
-    # ----------------------------------------------------------------------
-    # TODO: 7. Add code that makes the robot beep if the top-red button
-    # TODO:    on the Beacon is pressed.  Add code that makes the robot
-    # TODO:    speak "Hello. How are you?" if the top-blue button on the
-    # TODO:    Beacon is pressed.  Test.  When done, delete this TODO.
-    # ----------------------------------------------------------------------
+        # ----------------------------------------------------------------------
+        # TODO: 7. Add code that makes the robot beep if the top-red button
+        # TODO:    on the Beacon is pressed.  Add code that makes the robot
+        # TODO:    speak "Hello. How are you?" if the top-blue button on the
+        # TODO:    Beacon is pressed.  Test.  When done, delete this TODO.
+        # ---------------------------------------------------------------------
 
+    time.sleep(0.01)  # For the delegate to do its work
 
 class RemoteControlEtc(object):
     def __init__(self, robot):
@@ -70,45 +71,38 @@ class RemoteControlEtc(object):
             :type robot: rb.Snatch3rRobot
         """
         self.robot = robot
-        self.speed = None
-        self.initialized = False
 
     def movement(self, speed_string):
         #stores the robot's given speed
-        print("telling the robot to start moving at: ", speed_string)
-        speed = int(speed_string)
-        if self.initialized == False:
-            self.speed = speed
-            self.initialized = True
+        self.speed = speed_string
 
-        while True:
+    def forward(self):
+        self.robot.drive_system.start_moving(self.speed, self.speed)
+        self.object_area(1)
 
-            self.object_area(2)
+    def backward(self):
+        self.robot.drive_system.start_moving(-self.speed, -self.speed)
+        self.object_area(1)
 
-            if self.robot.beacon_button_sensor.is_top_blue_button_pressed():
-                self.robot.drive_system.start_moving(self.speed/2, self.speed)
+    def right(self):
+        self.robot.drive_system.start_moving(self.speed, -self.speed)
+        self.object_area(1)
 
-            if self.robot.beacon_button_sensor.is_top_red_button_pressed():
-                self.robot.drive_system.start_moving(self.speed, self.speed/2)
-
-            if self.robot.beacon_button_sensor.is_bottom_blue_button_pressed():
-                self.robot.drive_system.start_moving(-self.speed, -self.speed/2)
-
-            if self.robot.beacon_button_sensor.is_bottom_red_button_pressed():
-                self.robot.drive_system.start_moving(-self.speed/2, -self.speed)
-
-            if self.robot.beacon_button_sensor.is_top_red_button_pressed() and self.robot.beacon_button_sensor.is_top_blue_button_pressed():
-                self.robot.drive_system.start_moving(self.speed, self.speed)
-
-            if self.robot.beacon_button_sensor.is_bottom_red_button_pressed() and self.robot.beacon_button_sensor.is_bottom_blue_button_pressed():
-                self.robot.drive_system.start_moving(self.speed, self.speed)
-
-
+    def left(self):
+        self.robot.drive_system.start_moving(-self.speed, self.speed)
+        self.object_area(1)
 
     def object_area(self, num):
+        print(self.robot.camera.get_biggest_blob().get_area())
         if self.robot.camera.get_biggest_blob().get_area() >= (96 * num) ** 2:
             self.robot.drive_system.start_moving(-self.speed, -self.speed)
-            ev3.Sound.speak('Something is in my way.')
+            ev3.Sound.speak("Something is in my way")
+
+    def find_color(self, color):
+        while True:
+            if self.robot.color_sensor.get_color() == color:
+                self.robot.drive_system.stop_moving(stop_action='brake')
+                break
 
 
 main()

@@ -10,9 +10,7 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    while True:
-        robot = rb.Snatch3rRobot()
-        remote(robot)
+    #robot = rb.Snatch3rRobot()
     #color1 = rb.Color.WHITE.value
     #find_color(color1, robot)
     #object_area(robot)

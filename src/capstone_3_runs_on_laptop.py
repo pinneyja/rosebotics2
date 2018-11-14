@@ -65,21 +65,56 @@ def main():
     # TODO:    Test.  When OK, delete this TODO.
     # --------------------------------------------------------------------------
 
+    root.bind("<w>", lambda event: new_method(mqtt_client, 'w'))
+    root.bind("<s>", lambda event: new_method(mqtt_client, 's'))
+    root.bind("<d>", lambda event: new_method(mqtt_client, 'd'))
+    root.bind("<a>", lambda event: new_method(mqtt_client, 'a'))
+
 
 def setup_gui(root_window, user):
     """ Constructs and sets up widgets on the given window. """
-    frame = ttk.Frame(root_window, padding=10)
+    frame = ttk.Frame(root_window, padding=50)
     frame.grid()
 
     speed_entry_box = ttk.Entry(frame)
-    go_forward_button = ttk.Button(frame, text="Go forward")
+    color_entry_box = ttk.Entry(frame)
+    speed_button = ttk.Button(frame, text="Speed!")
+    color_button = ttk.Button(frame, text="Color!")
+    label = ttk.Label(frame, text="The Manipulator!")
 
+    label.grid()
     speed_entry_box.grid()
-    go_forward_button.grid()
+    speed_button.grid()
+    color_entry_box.grid()
+    color_button.grid()
 
-    go_forward_button['command'] = \
+    speed_button['command'] = \
         lambda: handle_go_forward(speed_entry_box, user)
 
+    speed_button['command'] = \
+        lambda: color_stopper(color_entry_box, user)
+
+
+def new_method(client, key):
+    if key == 'w':
+        client.send_message("forward", [])
+
+    if key == 's':
+        client.send_message("backward", [])
+
+    if key == 'd':
+        client.send_message("right", [])
+
+    if key == 'a':
+        client.send_message("left", [])
+
+def color_stopper(color_input, mqtt_client):
+    """
+    Tells the robot to go forward at the speed specified in the given entry box.
+    """
+    color_string = color_input.get()
+
+    mqtt_client.send_message('movement', [color_string])
 
 def handle_go_forward(speed_input, mqtt_client):
     """
