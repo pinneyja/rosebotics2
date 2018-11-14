@@ -15,6 +15,9 @@ def main():
     #find_color(color1, robot)
     #object_area(robot)
 
+def remote(robo):
+    inch = 1
+    if robo.camera.get_biggest_blob() >= (96*inch)**2:
 
 def find_color(color, robo):
     robo.drive_system.start_moving()
