@@ -10,11 +10,16 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    #robot = rb.Snatch3rRobot()
+    while True:
+        robot = rb.Snatch3rRobot()
+        remote(robot)
     #color1 = rb.Color.WHITE.value
     #find_color(color1, robot)
     #object_area(robot)
 
+def remote(robo):
+    inch = 1
+    if robo.camera.get_biggest_blob() >= (96*inch)**2:
 
 def find_color(color, robo):
     robo.drive_system.start_moving()
