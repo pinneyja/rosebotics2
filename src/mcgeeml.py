@@ -11,7 +11,7 @@ import time
 def main():
     """ Runs YOUR specific part of the project """
     #robot = rb.Snatch3rRobot()
-    #color1 = rb.Color.BROWN.value
+    #color1 = rb.Color.WHITE.value
     #find_color(color1, robot)
     #object_area(robot)
 

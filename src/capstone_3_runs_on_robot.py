@@ -38,7 +38,7 @@ def main():
     # TODO:    be used to receive commands sent by the laptop.
     # TODO:    Connect it to this robot.  Test.  When OK, delete this TODO.
     # --------------------------------------------------------------------------
-    rc = RemoteControlEtc(robot)
+    rc = RemoteControlEtc(robo)
     mqtt_client = com.MqttClient(rc)
     mqtt_client.connect_to_pc()
 
