@@ -26,43 +26,14 @@ import ev3dev.ev3 as ev3
 
 
 def main():
-    # --------------------------------------------------------------------------
-    # TODO: 3. Construct a Snatch3rRobot.  Test.  When OK, delete this TODO.
-    # --------------------------------------------------------------------------
-
-    robo = rb.Snatch3rRobot()
-
-
-    # --------------------------------------------------------------------------
-    # TODO: 4. Add code that constructs a   com.MqttClient   that will
-    # TODO:    be used to receive commands sent by the laptop.
-    # TODO:    Connect it to this robot.  Test.  When OK, delete this TODO.
-    # --------------------------------------------------------------------------
-    rc = RemoteControlEtc(robo)
-    mqtt_client = com.MqttClient(rc)
+    robot = rb.Snatch3rRobot()
+    remote = RemoteControlEtc(robot)
+    mqtt_client = com.MqttClient(remote)
     mqtt_client.connect_to_pc()
 
-    # --------------------------------------------------------------------------
-    # TODO: 5. Add a class for your "delegate" object that will handle messages
-    # TODO:    sent from the laptop.  Construct an instance of the class and
-    # TODO:    pass it to the MqttClient constructor above.  Augment the class
-    # TODO:    as needed for that, and also to handle the go_forward message.
-    # TODO:    Test by PRINTING, then with robot.  When OK, delete this TODO.
-    # --------------------------------------------------------------------------
+    while True:
+        time.sleep(.01)
 
-    # --------------------------------------------------------------------------
-    # TODO: 6. With your instructor, discuss why the following WHILE loop,
-    # TODO:    that appears to do nothing, is necessary.
-    # TODO:    When you understand this, delete this TODO.
-    # --------------------------------------------------------------------------
-        # ----------------------------------------------------------------------
-        # TODO: 7. Add code that makes the robot beep if the top-red button
-        # TODO:    on the Beacon is pressed.  Add code that makes the robot
-        # TODO:    speak "Hello. How are you?" if the top-blue button on the
-        # TODO:    Beacon is pressed.  Test.  When done, delete this TODO.
-        # ---------------------------------------------------------------------
-
-    time.sleep(0.01)  # For the delegate to do its work
 
 class RemoteControlEtc(object):
     def __init__(self, robot):
@@ -72,37 +43,43 @@ class RemoteControlEtc(object):
         """
         self.robot = robot
 
-    def movement(self, speed_string):
-        #stores the robot's given speed
-        self.speed = speed_string
-
-    def forward(self):
-        self.robot.drive_system.start_moving(self.speed, self.speed)
-        self.object_area(1)
-
-    def backward(self):
-        self.robot.drive_system.start_moving(-self.speed, -self.speed)
-        self.object_area(1)
-
-    def right(self):
-        self.robot.drive_system.start_moving(self.speed, -self.speed)
-        self.object_area(1)
-
-    def left(self):
-        self.robot.drive_system.start_moving(-self.speed, self.speed)
-        self.object_area(1)
-
-    def object_area(self, num):
-        print(self.robot.camera.get_biggest_blob().get_area())
-        if self.robot.camera.get_biggest_blob().get_area() >= (96 * num) ** 2:
-            self.robot.drive_system.start_moving(-self.speed, -self.speed)
-            ev3.Sound.speak("Something is in my way")
-
-    def find_color(self, color):
+    def forward(self, speed_string):
+        speed = int(speed_string)
+        inches = .5
         while True:
-            if self.robot.color_sensor.get_color() == color:
-                self.robot.drive_system.stop_moving(stop_action='brake')
+            if self.robot.color_sensor.get_color() == 6:
+                self.robot.drive_system.stop_moving()
+            elif self.robot.camera.get_biggest_blob().get_area() >= (96 * inches)**2:
+                ev3.Sound.speak('something is in my way')
+                self.robot.drive_system.stop_moving()
                 break
+            else:
+                self.robot.drive_system.start_moving(speed, speed)
+
+    def backward(self, speed_string):
+        speed = -int(speed_string)
+        self.robot.drive_system.start_moving(speed, speed)
+
+    def right(self, speed_string):
+        speed = int(speed_string)
+        self.robot.drive_system.start_moving(-speed, speed)
+
+    def left(self, speed_string):
+        speed = int(speed_string)
+        self.robot.drive_system.start_moving(speed, -speed)
+
+    def stopper(self):
+        self.robot.drive_system.stop_moving()
+
+    def booster(self, speed_input):
+        speed = int(speed_input)*2
+        self.robot.drive_system.start_moving(speed, speed)
+
+    def lift(self):
+        self.robot.arm.raise_arm_and_close_claw()
+
+    def drop(self):
+        self.robot.arm.calibrate()
 
 
 main()
